@@ -2,6 +2,7 @@ import Web3 from 'web3';
 import Registry from './Registry';
 import PublicResolver from './PublicResolver';
 import Registrar from './Registrar';
+import RIF from './RIF';
 import defaultAddresses from './contracts';
 
 export default class RNS {
@@ -15,8 +16,8 @@ export default class RNS {
   constructor (web3Provider, options = {}, addresses = defaultAddresses) {
     const web3 = new Web3(web3Provider, options);
 
-    this.registry = new Registry(web3, options, addresses.registryAddress);
-    this.publicResolver = new PublicResolver(web3, options, addresses.publicResolverAddress);
-    this.registrar = new Registrar(web3, options, addresses.registrarAddress);
+    this.registry = new Registry(web3, addresses.registryAddress, options);
+    this.publicResolver = new PublicResolver(web3, addresses.publicResolverAddress, options);
+    this.registrar = new Registrar(web3, addresses.registrarAddress, addresses.rifAddress, options);
   }
 }
