@@ -1,15 +1,15 @@
 import registrarAbi from './abi/RegistrarABI';
-import { registrarAddress } from './contracts';
 
 export default class Registrar {
   /**
    * @param {Web3} web3 web3.js lib
    * @param {Object} options web3.js options
+   * @param {Address} address contract address in network
    *
    * @constructor
    */
-  constructor (web3, options = {}) {
-    this.contract = web3.eth.Contract(registrarAbi, registrarAddress, options);
+  constructor (web3, options = {}, address) {
+    this.contract = web3.eth.Contract(registrarAbi, address, options);
     this.sha3 = web3.utils.sha3;
   }
 

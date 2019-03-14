@@ -1,16 +1,16 @@
 import registryAbi from './abi/RegistryABI';
-import { registryAddress } from './contracts';
 import { hash as namehash } from 'eth-ens-namehash';
 
 export default class Registry {
   /**
    * @param {Web3} web3 web3.js lib
    * @param {Object} options web3.js options
+   * @param {Address} address contract address in network
    *
    * @constructor
    */
-  constructor (web3, options = {}) {
-    this.contract = web3.eth.Contract(registryAbi, registryAddress, options);
+  constructor (web3, options = {}, address) {
+    this.contract = web3.eth.Contract(registryAbi, address, options);
     this.sha3 = web3.utils.sha3;
   }
 

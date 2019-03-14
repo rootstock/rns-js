@@ -1,16 +1,16 @@
 import publicResolverAbi from './abi/PublicResolverABI';
-import { publicResolverAddress } from './contracts';
 import { hash as namehash } from 'eth-ens-namehash';
 
 export default class PublicResolver {
   /**
    * @param {Web3} web3 web3.js lib
    * @param {Object} options web3.js options
+   * @param {Address} address contract address in network
    *
    * @constructor
    */
-  constructor (web3, options = {}) {
-    this.contract = web3.eth.Contract(publicResolverAbi, publicResolverAddress, options);
+  constructor (web3, options = {}, address) {
+    this.contract = web3.eth.Contract(publicResolverAbi, address, options);
   }
 
   /**
