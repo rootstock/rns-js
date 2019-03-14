@@ -2,14 +2,13 @@ import Web3 from 'web3';
 import Registry from './Registry';
 import PublicResolver from './PublicResolver';
 import Registrar from './Registrar';
-import RIF from './RIF';
 import defaultAddresses from './contracts';
 
 export default class RNS {
   /**
    * @param {AbstractSocketProvider|HttpProvider|CustomProvider|String} web3Provider web3.js provider
    * @param {Object} options web3.js options
-   * @parm {Object} addresses with ./contracts.json format
+   * @param {Object} addresses with ./contracts.json format
    *
    * @constructor
    */
