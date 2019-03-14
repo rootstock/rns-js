@@ -11,6 +11,7 @@ export default class Registry {
    */
   constructor (web3, options = {}) {
     this.contract = web3.eth.Contract(registryAbi, registryAddress, options);
+    this.sha3 = web3.utils.sha3;
   }
 
   /**
@@ -86,5 +87,20 @@ export default class Registry {
     const hash = namehash(name);
 
     return this.contract.methods.setTTL(hash, ttl).send();
+  }
+
+  /**
+   * Sets a name's subnode owner
+   * @param {String} name
+   * @param {String} label
+   * @param {Address} owner
+   *
+   * @returns {Promise<TxHash>}
+   */
+  setSubnodeOwner (name, label, owner) {
+    const hash = namehash(name);
+    const subnode = this.sha3(label);
+
+    return this.contract.methods.setSubnodeOwner(hash, subnode, owner).send();
   }
 }
