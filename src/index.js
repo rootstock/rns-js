@@ -1,5 +1,6 @@
 import Web3 from 'web3';
 import Registry from './Registry';
+import PublicResolver from './PublicResolver';
 
 export default class RNS {
   /**
@@ -12,5 +13,6 @@ export default class RNS {
     const web3 = new Web3(web3Provider, options);
 
     this.registry = new Registry(web3, options);
+    this.publicResolver = new PublicResolver(web3, options);
   }
 }
