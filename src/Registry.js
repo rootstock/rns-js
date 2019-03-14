@@ -5,11 +5,12 @@ import { hash as namehash } from 'eth-ens-namehash';
 export default class Registry {
   /**
    * @param {Web3} web3 web3.js lib
+   * @param {Object} options web3.js options
    *
    * @constructor
    */
-  constructor (web3) {
-    this.contract = web3.eth.Contract(registryAbi, registryAddress);
+  constructor (web3, options = {}) {
+    this.contract = web3.eth.Contract(registryAbi, registryAddress, options);
   }
 
   /**
