@@ -1,8 +1,7 @@
-import Web3 from 'web3';
 import Registry from './Registry';
 import PublicResolver from './PublicResolver';
 import Registrar from './Registrar';
-import defaultAddresses from './contracts';
+import mainnetContracts from './contracts';
 
 export default class RNS {
   /**
@@ -12,11 +11,9 @@ export default class RNS {
    *
    * @constructor
    */
-  constructor (web3Provider, options = {}, addresses = defaultAddresses) {
-    const web3 = new Web3(web3Provider, options);
-
-    this.registry = new Registry(web3, addresses.registryAddress, options);
-    this.publicResolver = new PublicResolver(web3, addresses.publicResolverAddress, options);
-    this.registrar = new Registrar(web3, addresses.registrarAddress, addresses.rifAddress, options);
+  constructor (web3, contracts = mainnetContracts) {
+    this.registry = new Registry(web3, contracts.rns);
+    this.publicResolver = new PublicResolver(web3, contracts.publicResolver);
+    this.registrar = new Registrar(web3, contracts.rskRegistrar, contracts.rif);
   }
 }

@@ -23,7 +23,7 @@ export default class Registry {
   owner (name) {
     const hash = namehash(name);
 
-    return this.contract.methods.owner(hash).call()
+    return this.contract.methods.owner(hash).call();
   }
 
   /**
