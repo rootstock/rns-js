@@ -103,4 +103,18 @@ export default class Registry {
 
     return this.contract.methods.setSubnodeOwner(hash, subnode, owner).send();
   }
+
+  /**
+   * Gets a name's owner, resolver and ttl
+   * @param {String} name
+   *
+   * @returns {{ owner: Promise<Address>, resolver: Promise<Address>, ttl: Promise<Address>]}
+   */
+  entry (name) {
+    return {
+      owner: this.owner(name),
+      resolver: this.resolver(name),
+      ttl: this.ttl(name)
+    };
+  }
 }
