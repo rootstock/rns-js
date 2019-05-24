@@ -1,4 +1,6 @@
-# rns-js - RNS JavaScript API
+<img src="/logo.png" alt="logo" height="200" />
+
+# `rns-js`
 
 This is the RNS JavaScript API which connects to the RNS Smart Contracts.
 
@@ -18,6 +20,7 @@ yarn link
 ## Usage
 
 ```js
+import Web3 from 'web3';
 import RNS from 'rns-js';
 
 const rns = new RNS('ws://localhost:8546');
@@ -50,7 +53,8 @@ class Resolver extends Component {
 
       if (window.ethereum.networkVersion !== '30') alert('Please connect to RSK MainNet!');
 
-      this.rns = new RNS(window.ethereum, { defaultAccount: accounts[0] });
+      const web3 = new Web3(window.ethereum);
+      this.rns = new RNS(web3, { defaultAccount: accounts[0] });
     });
   }
 
@@ -84,3 +88,18 @@ class Resolver extends Component {
 
 export default Resolver;
 ```
+
+---
+
+## Related links
+
+- [RSK](https://rsk.co)
+    - [Docs](https://github.com/rsksmart/rskj/wiki)
+- [RIF](https://rifos.org)
+    - [Docs](https://www.rifos.org/documentation/)
+    - [Whitepaper](https://docs.rifos.org/rif-whitepaper-en.pdf)
+    - [Testnet faucet](https://faucet.rifos.org)
+- RNS
+    - [Docs](https://docs.rns.rifos.org)
+    - [Manager](https://rns.rifos.org)
+    - [Testnet registrar](https://testnet.rns.rifos.org)
