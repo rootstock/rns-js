@@ -1,7 +1,7 @@
-import registryAbi from './abi/RegistryABI';
-import { hash as namehash } from 'eth-ens-namehash';
+const registryAbi = require('./abi/RegistryABI');
+const namehash = require('eth-ens-namehash').hash;
 
-export default class Registry {
+class Registry {
   /**
    * @param {Web3} web3 web3.js lib
    * @param {Address} address contract address in network
@@ -9,7 +9,7 @@ export default class Registry {
    *
    * @constructor
    */
-  constructor (web3, address, options = {}) {
+  constructor (web3, address, options = null) {
     this.contract = new web3.eth.Contract(registryAbi, address, options);
     this.sha3 = web3.utils.sha3;
   }
@@ -33,10 +33,10 @@ export default class Registry {
    *
    * @returns {Promise<TxHash>}
    */
-  setOwner (name, owner) {
+  setOwner (name, owner, options = null) {
     const hash = namehash(name);
 
-    return this.contract.methods.setOwner(hash, owner).send();
+    return this.contract.methods.setOwner(hash, owner).send(options);
   }
 
   /**
@@ -58,10 +58,10 @@ export default class Registry {
    *
    * @returns {Promise<TxHash>}
    */
-  setResolver (name, resolver) {
+  setResolver (name, resolver, options = null) {
     const hash = namehash(name);
 
-    return this.contract.methods.setResolver(hash, resolver).send();
+    return this.contract.methods.setResolver(hash, resolver).send(options);
   }
 
   /**
@@ -83,10 +83,10 @@ export default class Registry {
    *
    * @returns {Promise<TxHash>}
    */
-  setTtl (name, ttl) {
+  setTtl (name, ttl, options = null) {
     const hash = namehash(name);
 
-    return this.contract.methods.setTTL(hash, ttl).send();
+    return this.contract.methods.setTTL(hash, ttl).send(options);
   }
 
   /**
@@ -97,24 +97,12 @@ export default class Registry {
    *
    * @returns {Promise<TxHash>}
    */
-  setSubnodeOwner (name, label, owner) {
+  setSubnodeOwner (name, label, owner, options = null) {
     const hash = namehash(name);
     const subnode = this.sha3(label);
 
-    return this.contract.methods.setSubnodeOwner(hash, subnode, owner).send();
-  }
-
-  /**
-   * Gets a name's owner, resolver and ttl
-   * @param {String} name
-   *
-   * @returns {{ owner: Promise<Address>, resolver: Promise<Address>, ttl: Promise<Address>]}
-   */
-  entry (name) {
-    return {
-      owner: this.owner(name),
-      resolver: this.resolver(name),
-      ttl: this.ttl(name)
-    };
+    return this.contract.methods.setSubnodeOwner(hash, subnode, owner).send(options);
   }
 }
+
+module.exports = Registry;

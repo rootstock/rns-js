@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "license": "MIT",
   "dependencies": {
-    "eth-ens-namehash": "^2.0.8"
+    "eth-ens-namehash": "^2.0.8",
+    "web3-utils": "^1.0.0-beta.55"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,9 @@
     "web3.js",
     "rsksmart",
     "rnsdomains"
-  ]
+  ],
+  "devDependencies": {
+    "bn-chai": "^1.0.1",
+    "chai": "^4.2.0"
+  }
 }
