@@ -1,7 +1,7 @@
-import publicResolverAbi from './abi/PublicResolverABI';
-import { hash as namehash } from 'eth-ens-namehash';
+const publicResolverAbi = require('./abi/PublicResolverABI');
+const namehash = require('eth-ens-namehash').hash;
 
-export default class PublicResolver {
+class PublicResolver {
   /**
    * @param {Web3} web3 web3.js lib
    * @param {Address} address contract address in network
@@ -9,7 +9,7 @@ export default class PublicResolver {
    *
    * @constructor
    */
-  constructor (web3, address, options = {}) {
+  constructor (web3, address, options = null) {
     this.contract = new web3.eth.Contract(publicResolverAbi, address, options);
   }
 
@@ -32,10 +32,10 @@ export default class PublicResolver {
    *
    * @returns {Promise<TxHash>}
    */
-  setAddr (name, address) {
+  setAddr (name, address, options = null) {
     const hash = namehash(name);
 
-    return this.contract.methods.setAddr(hash, address).send();
+    return this.contract.methods.setAddr(hash, address).send(options);
   }
 
   /**
@@ -57,9 +57,11 @@ export default class PublicResolver {
    *
    * @returns {Promise<TxHash>}
    */
-  setContent (name, content) {
+  setContent (name, content, options = null) {
     const hash = namehash(name);
 
-    return this.contract.methods.setContent(hash, content).send();
+    return this.contract.methods.setContent(hash, content).send(options);
   }
 }
+
+module.exports = PublicResolver;

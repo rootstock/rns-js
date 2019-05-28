@@ -12,14 +12,14 @@ contract('Regitry', accounts => {
   const rsk = 'rsk';
 
   beforeEach(async () => {
-    const regsitryContract = await RegistryContract.new();
+    const registryContract = await RegistryContract.new();
 
     const rootNode = '0x0000000000000000000000000000000000000000000000000000000000000000';
     const tld = web3.utils.sha3(rsk);
-    await regsitryContract.setResolver(rootNode, resolver);
-    await regsitryContract.setSubnodeOwner(rootNode, tld, accounts[0]);
+    await registryContract.setResolver(rootNode, resolver);
+    await registryContract.setSubnodeOwner(rootNode, tld, accounts[0]);
 
-    registry = new Registry(web3, regsitryContract.address);
+    registry = new Registry(web3, registryContract.address);
   });
 
   it('should get a name\' owner', async () => {
