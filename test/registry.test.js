@@ -1,10 +1,10 @@
+const RegistryContract = artifacts.require('RNS');
+const Registry = require('../src/Registry');
+
 const chai = require('chai');
 const bnChai = require('bn-chai');
 chai.use(bnChai(web3.utils.BN));
 const expect = chai.expect;
-
-const RegistryContract = artifacts.require('RNS');
-const Registry = require('../src/Registry');
 
 contract('Regitry', accounts => {
   let registry;

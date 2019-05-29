@@ -1,9 +1,9 @@
-import registrarAbi from './abi/RegistrarABI';
-import rifAbi from './abi/erc677ABI.json';
+const registrarAbi = require('./abi/RegistrarABI');
+const rifAbi = require('./abi/erc677ABI.json');
 
 const BID_SIGN = '0x1413151f';
 
-export default class Registrar {
+class Registrar {
   /**
    * @param {Web3} web3 web3.js lib
    * @param {Address} address contract address in network
@@ -13,8 +13,13 @@ export default class Registrar {
    */
   constructor (web3, registrarAddress, rifAddress, options = {}) {
     this.contract = new web3.eth.Contract(registrarAbi, registrarAddress, options);
+    this.registrarAddress = registrarAddress;
     this.rif = new web3.eth.Contract(rifAbi, rifAddress, options);
-    this.sha3 = web3.utils.sha3;
+    this.utils = web3.utils;
+  }
+
+  toUint256Tokens (value) {
+    return this.utils.numberToHex(value * (10**18));
   }
 
   /**
@@ -23,39 +28,39 @@ export default class Registrar {
    *
    * @returns {Promise<TxHash>}
    */
-  startAuction (label) {
-    const hash = this.sha3(label);
+  startAuction (label, options) {
+    const hash = this.utils.sha3(label);
 
-    return this.contract.methods.startAuction(hash).send();
+    return this.contract.methods.startAuction(hash).send(options);
   }
 
   /**
    * New bid using ERC-677 transferAndCall method
    * @param {Bytes32} shaBid
-   * @param {Number} rifs
+   * @param {Number} value
    *
    * @returns {Promise<TxHash>}
    */
-  newBidWithToken (shaBid, rifs) {
+  newBidWithToken (shaBid, value, options) {
     const data = BID_SIGN + shaBid.slice(2);
-    const tokens = rifs * (10**18);
+    const tokens = this.toUint256Tokens(value);
 
-    return this.rif.methods.transferAndCall(this.registrarAddress, tokens, data).send();
+    return this.rif.methods.transferAndCall(this.registrarAddress, tokens, data).send(options);
   }
 
   /**
    * Unseal a bid for {label}.rsk
    * @param {String} label
-   * @param {Number} rifs
+   * @param {Number} value
    * @param {Bytes32} salt
    *
    * @returns {Promise<TxHash>}
    */
-  unsealBid (label, rifs, salt) {
-    const hash = this.sha3(label);
-    const tokens = rifs * (10**18);
+  unsealBid (label, value, salt, options) {
+    const hash = this.utils.sha3(label);
+    const tokens = this.toUint256Tokens(value);
 
-    return this.contract.methods.unsealBid(hash, tokens, salt).send();
+    return this.contract.methods.unsealBid(hash, tokens, salt).send(options);
   }
 
   /**
@@ -64,10 +69,10 @@ export default class Registrar {
    *
    * @returns {Promise<TxHash>}
    */
-  finalizeAuction (label) {
-    const hash = this.sha3(label);
+  finalizeAuction (label, options) {
+    const hash = this.utils.sha3(label);
 
-    return this.contract.methods.finalizeAuction(hash).send();
+    return this.contract.methods.finalizeAuction(hash).send(options);
   }
 
   /**
@@ -77,7 +82,7 @@ export default class Registrar {
    * @returns {Promise<Number>}
    */
   state (label) {
-    const hash = this.sha3(label);
+    const hash = this.utils.sha3(label);
 
     return this.contract.methods.state(hash).call();
   }
@@ -89,24 +94,26 @@ export default class Registrar {
    * @returns {Prmoise<Object>}
    */
   entries (label) {
-    const hash = this.sha3(label);
+    const hash = this.utils.sha3(label);
 
     return this.contract.methods.entries(hash).call();
   }
 
   /**
-   * Hashes a bid for {label}.rsk of {rifs} value
+   * Hashes a bid for {label}.rsk of a given value
    * @param {String} label
    * @param {Address} owner
-   * @param {Number} rifs
+   * @param {Number} value
    * @param {Bytes32} salt
    *
    * @returns {Promise<Bytes32>}
    */
-  shaBid (label, owner, rifs, salt) {
-    const hash = this.sha3(label);
-    const tokens = rifs * (10**18);
+  shaBid (label, owner, value, salt) {
+    const hash = this.utils.sha3(label);
+    const tokens = this.toUint256Tokens(value);
 
     return this.contract.methods.shaBid(hash, owner, tokens, salt).call();
   }
 }
+
+module.exports = Registrar;
