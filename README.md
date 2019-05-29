@@ -11,7 +11,7 @@ You need to run a local or remote RSK node to use this library.
 Still just local...
 
 ```sh
-git clone https://github.com/ilanolkies/rns-js
+git clone https://github.com/rnsdomains/rns-js
 cd rns-js
 yarn install
 yarn link
