@@ -24,5 +24,9 @@
   "devDependencies": {
     "bn-chai": "^1.0.1",
     "chai": "^4.2.0"
+  },
+  "resolutions": {
+    "lodash": "^4.17.14",
+    "lodash.template": "^4.5.0"
   }
 }
